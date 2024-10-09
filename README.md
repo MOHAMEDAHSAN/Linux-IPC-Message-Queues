@@ -1,5 +1,6 @@
 # Linux-IPC-Message-Queues
-Linux IPC-Message Queue
+Linux IPC-Message Queues
+
 # AIM:
 To write a C program that receives a message from message queue and display them
 
@@ -20,14 +21,13 @@ Execute the C Program for the desired output.
 # PROGRAM:
 
 ## C program that receives a message from message queue and display them
-
-```
-// C Program for Message Queue (writer Process) 
+### writer.c
+```c
+// C Program for Message Queue (Writer Process) 
 #include <stdio.h> 
 #include <sys/ipc.h> 
 #include <sys/msg.h> 
-#include <string.h>
-#include <stdlib.h>
+
 // structure for message queue 
 struct mesg_buffer { 
 	long mesg_type; 
@@ -35,24 +35,25 @@ struct mesg_buffer {
 } message; 
 int main() 
 { 	key_t key; 
-	int msgid; 
-
+	int msgid;
+    // ftok to generate unique key 
 	key = ftok("progfile", 65); 
-
-
+	// msgget creates a message queue 
+	// and returns identifier 
 	msgid = msgget(key, 0666 | IPC_CREAT); 
 	message.mesg_type = 1; 
 	printf("Write Data : "); 
-scanf("%s",message.mesg_text);
-
+	gets(message.mesg_text); 
+	// msgsnd to send message 
 	msgsnd(msgid, &message, sizeof(message), 0); 
-
+	// display the message 
 	printf("Data send is : %s \n", message.mesg_text); 
 	return 0; 
-}
-
-// C Program for Message Queue (reader Process) 
-
+} 
+```
+### reader.c
+```c
+// C Program for Message Queue (Reader Process)
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/msg.h>
@@ -66,7 +67,7 @@ int main()
 {
 	key_t key;
 	int msgid;
-// ftok to generate unique key
+    	// ftok to generate unique key
 	key = ftok("progfile", 65);
 	// msgget creates a message queue
 	// and returns identifier
@@ -82,14 +83,8 @@ int main()
 	return 0;
 }
 ```
-
-
-
 ## OUTPUT
-![image](https://github.com/user-attachments/assets/98c77d19-138e-402a-8bdd-ad9f715126cc)
-
-
-
+![Screenshot 2024-04-03 142401](https://github.com/2005Mukesh/Linux-IPC-Message-Queues/assets/138849308/4195d1d4-d41f-4124-9ec1-b456e14ff5b5)
 
 # RESULT:
 The programs are executed successfully.
